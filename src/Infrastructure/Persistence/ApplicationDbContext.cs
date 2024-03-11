@@ -4,6 +4,7 @@ using UrlShortenerService.Infrastructure.Persistence.Interceptors;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using UrlShortenerService.Domain.Entities;
+using System.Reflection.Emit;
 
 namespace UrlShortenerService.Infrastructure.Persistence;
 
@@ -29,6 +30,13 @@ public class ApplicationDbContext : DbContext, IApplicationDbContext
         builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
 
         base.OnModelCreating(builder);
+
+        builder.Entity<ShortenUrl>(a =>
+        {
+            a.ToTable("ShortenUrl").HasKey(k => k.Id);
+            a.Property(p => p.Id).HasColumnName("Id");
+            a.Property(p => p.OriginalUrl).HasColumnName("OriginalUrl");
+        });
     }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

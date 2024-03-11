@@ -1,5 +1,4 @@
-﻿using Azure;
-using MediatR;
+﻿using MediatR;
 using UrlShortenerService.Api.Endpoints.Url.Requests;
 using UrlShortenerService.Application.Url.Commands;
 using IMapper = AutoMapper.IMapper;
@@ -43,6 +42,6 @@ public class CreateShortUrlEndpoint : BaseEndpoint<CreateShortUrlRequest>
             ct
         );
 
-        await SendCreatedAtAsync<CreateShortUrlEndpoint>(null, result, Http.POST, null, false, ct);
+        await SendCreatedAtAsync<RedirectToUrlEndpoint>(result.ShortenedUrl, result, Http.POST, null, false, ct);
     }
 }
